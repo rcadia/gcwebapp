@@ -3,16 +3,20 @@ from gcwebapp.BaseTestCase         import BaseTestCase
 from gcwebapp.Common               import Common
 from gcwebapp.UIMap                import PublicPageMap
 from gcwebapp.UIMap                import ProHomepage
+from gcwebapp.UIMap                import ProSidebar
+from gcwebapp.UIMap                import ModalPopupMap
+from random                        import randint
 import unittest
 import time
 
 """
-Scenario: Pro user logs in using valid credentials.
+Scenario: Pro creates a new exercise.
 Given I am a Pro
-And I navigate to Public Page
-When I enter valid credentials
-Then I am redirected to homepage
-And I see the global search bar 
+And I am in Exercise List
+When I press Add Exercise
+And a modal pop up appears
+And I enter an exercise name
+Then see my exercise in Exercise list 
 
 """
 
@@ -31,6 +35,7 @@ class logInPro(BaseTestCase, unittest.TestCase):
                                                "xpath", 
                                                PublicPageMap["UsernameFieldXpath"]
         )
+#Given I am a Pro
         common_obj.fill_out_field("xpath", 
                                   PublicPageMap["UsernameFieldXpath"],
                                   TT_Constants["proUsername"]                          
@@ -47,8 +52,33 @@ class logInPro(BaseTestCase, unittest.TestCase):
                                                "xpath", 
                                                ProHomepage["GlobalSearchBarXpath"]
         )
+#And I am in Exercise List
+        common_obj.click(10, 
+                        "xpath", 
+                        ProSidebar["ExercisesButtonLink"]
+        )
+#When I press Add Exercise       
+#And A modal pop up appears
+        mainWindowHandle  = self.driver.window_handles
+        common_obj.click(10, "xpath", ProHomepage["AddExerciseButtonXpath"])
+        allWindowsHandles = self.driver.window_handles
+        for handle in allWindowsHandles:
+          if handle != mainWindowHandle[0]:
+            common_obj.switch_to_window(handle)
+            break
+#And I enter an exercise name 
+        exerciseNameGenerate = "Exercise ", + randint(0001,9999)                 
+        common_obj.fill_out_field("xpath",
+                                  ModalPopupMap["AddExercisePopup"],
+                                  exerciseNameGenerate
+        )                     
+        common_obj.click(10, 
+                        "xpath", 
+                        ModalPopupMap["AddExerciseButton"]
+        )
 
-    
+        time.sleep(15)
+
     def tearDown(self):
         super(logInPro, self).tearDown()
         
