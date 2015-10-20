@@ -7,7 +7,7 @@ PublicPageMap = dict (UsernameFieldXpath	= "//input[@name='username']",
 )
 
 ProHomepage = dict	(GlobalSearchBarXpath	= "//input[@id='gc-topnav-search']",
-					 AddExerciseButtonXpath = "//a[@class='btn btn-link gc-show-add-exercise-modal']"
+					 AddExerciseButtonXpath = "//a[@class='btn btn-link gc-show-add-exercise-modal']",
 )
 
 ProSidebar	= dict  (ExercisesButtonLink	= "//span[.='EXERCISES']"

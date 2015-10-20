@@ -5,7 +5,7 @@ from gcwebapp.UIMap                import PublicPageMap
 from gcwebapp.UIMap                import ProHomepage
 from gcwebapp.UIMap                import ProSidebar
 from gcwebapp.UIMap                import ModalPopupMap
-from random                        import randint
+from random                        import randint                    
 import unittest
 import time
 
@@ -17,6 +17,7 @@ When I press Add Exercise
 And a modal pop up appears
 And I enter an exercise name
 Then see my exercise in Exercise list 
+And I see it in Sidebar
 
 """
 
@@ -67,17 +68,25 @@ class logInPro(BaseTestCase, unittest.TestCase):
             common_obj.switch_to_window(handle)
             break
 #And I enter an exercise name 
-        exerciseNameGenerate = "Exercise ", + randint(0001,9999)                 
+        randomNumber         = randint(0001, 9999)
+        exerciseNameGenerate = "Exercise ", randomNumber                 
         common_obj.fill_out_field("xpath",
                                   ModalPopupMap["AddExercisePopup"],
                                   exerciseNameGenerate
-        )                     
+        )                    
         common_obj.click(10, 
                         "xpath", 
                         ModalPopupMap["AddExerciseButton"]
         )
-
-        time.sleep(15)
+#Then see my exercise in Exercise list
+        common_obj.wait_for_element_visibility(10, 
+                                               "xpath", 
+                                               "//a[contains(text(),"+str(randomNumber)+")][@class='gc-exercises-link']"
+        )
+#And I see it in Sidebar
+        common_obj.find_element("xpath", 
+                                "//span[contains(text(),"+str(randomNumber)+")]"
+        )
 
     def tearDown(self):
         super(logInPro, self).tearDown()
