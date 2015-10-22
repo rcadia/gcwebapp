@@ -12,13 +12,12 @@ import time
 """
 Scenario: Pro creates a new exercise.
 Given I am a Pro
-And I am in Exercise List
-When I press Add Exercise
-And a modal pop up appears
-And I enter an exercise name
-Then see my exercise in Exercise list 
-And I see it in Sidebar
-
+And I added a new exercise
+And I click on the new exercise
+And I am redirected to exercise overview
+When I enter a description
+And I click outside of the description area
+Then the my input value is visible
 """
 
 
@@ -53,13 +52,11 @@ class createExercise(BaseTestCase, unittest.TestCase):
                                                "xpath", 
                                                ProHomepage["GlobalSearchBarXpath"]
         )
-#And I am in Exercise List
+#And I added a new exercise
         common_obj.click(45, 
                         "xpath", 
                         ProSidebar["ExercisesButtonLink"]
         )
-#When I press Add Exercise       
-#And A modal pop up appears
         mainWindowHandle  = self.driver.window_handles
         common_obj.click(45, "xpath", ProHomepage["AddExerciseButtonXpath"])
         allWindowsHandles = self.driver.window_handles
@@ -67,7 +64,7 @@ class createExercise(BaseTestCase, unittest.TestCase):
           if handle != mainWindowHandle[0]:
             common_obj.switch_to_window(handle)
             break
-#And I enter an exercise name 
+        #exercise creation
         randomNumber         = randint(0001, 9999)
         exerciseNameGenerate = "Exercise ", randomNumber                 
         common_obj.fill_out_field("xpath",
@@ -78,16 +75,21 @@ class createExercise(BaseTestCase, unittest.TestCase):
                         "xpath", 
                         ModalPopupMap["AddExerciseButton"]
         )
-#Then see my exercise in Exercise list
         common_obj.wait_for_element_visibility(45, 
                                                "xpath", 
                                                "//a[contains(text(),"+str(randomNumber)+")][@class='gc-exercises-link']"
         )
-#And I see it in Sidebar
-        common_obj.find_element("xpath", 
-                                "//span[contains(text(),"+str(randomNumber)+")]"
+#And I click on the new exercise
+        common_obj.click(45, 
+                        "xpath", 
+                        "//a[contains(text(),"+str(randomNumber)+")][@class='gc-exercises-link']"
         )
-
+#And I am redirected to exercise overview
+        common_obj.wait_for_element_visibility(45, 
+                                               "xpath", 
+                                               "//span[.='Exercises']"
+        )
+        time.sleep(5)
     def tearDown(self):
         super(createExercise, self).tearDown()
         

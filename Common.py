@@ -74,5 +74,18 @@ class Common(object):
  def click(self, waitTime, locatorMode, Locator):
      self.wait_until_element_clickable(waitTime, locatorMode, Locator).click()
 
+ def get_attribute(self, locatorMode, locator, attribute):
+     element = None
+     if locatorMode == LocatorMode.ID:
+        element = self.driver.get_attribute(attribute)
+     elif locatorMode == LocatorMode.NAME:
+      element = self.driver.get_attribute(attribute)
+     elif locatorMode == LocatorMode.XPATH:
+      element = self.driver.get_attribute(attribute)
+     elif locatorMode == LocatorMode.CSS_SELECTOR: 
+      element = self.driver.get_attribute(attribute)
+     else:
+      raise Exception("Unsupported locator strategy.")
+     return element
 
 

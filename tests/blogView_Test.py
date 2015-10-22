@@ -26,15 +26,15 @@ class blogView(BaseTestCase, unittest.TestCase):
     def test_blog(self):
         common_obj = Common(self.driver)
 
-        common_obj.wait_for_element_visibility(10, 
+        common_obj.wait_for_element_visibility(50, 
                                                "xpath", 
                                                PublicPageMap["BlogButtonsXpath"]
         )
-        common_obj.click(10, 
+        common_obj.click(50, 
                         "xpath", 
                         PublicPageMap["BlogButtonsXpath"]
         )
-        common_obj.wait_for_element_visibility(10, 
+        common_obj.wait_for_element_visibility(50, 
                                                "xpath", 
                                               PublicPageMap["NewsEmailfieldXpath"]
         )
