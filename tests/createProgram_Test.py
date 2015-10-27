@@ -8,27 +8,29 @@ from gcwebapp.UIMap                import ModalPopupMap
 from random                        import randint                    
 import unittest
 import time
+import nose
 
 """
-Scenario: Pro creates a new exercise.
+Scenario: Pro creates a new program.
 Given I am a Pro
-And I added a new exercise
-And I click on the new exercise
-And I am redirected to exercise overview
-When I enter a description
-And I click outside of the description area
-Then the my input value is visible
+And I am in program List
+When I press Add program
+And a modal pop up appears
+And I enter an program name
+Then see my program in program list 
+And I see it in Sidebar
+
 """
 
 
-class createExercise(BaseTestCase, unittest.TestCase):
+class createProgram(BaseTestCase, unittest.TestCase):
 
     def setUp(self):
-        super(createExercise, self).setUp()
+        super(createProgram, self).setUp()
         self.navigate_to_page(TT_Constants['Base_URL'])
         
 
-    def test_createExercise(self):
+    def test_createProgram(self):
         common_obj = Common(self.driver)
 
         common_obj.wait_for_element_visibility(45, 
@@ -52,21 +54,23 @@ class createExercise(BaseTestCase, unittest.TestCase):
                                                "xpath", 
                                                ProHomepage["GlobalSearchBarXpath"]
         )
-#And I added a new exercise
+#And I am in program List
         common_obj.click(45, 
                         "xpath", 
-                        ProSidebar["ExercisesButtonLink"]
+                        ProSidebar["ProgramButtonLink"]
         )
+#When I press Add program       
+#And A modal pop up appears
         mainWindowHandle  = self.driver.window_handles
-        common_obj.click(45, "xpath", ProHomepage["AddExerciseButtonXpath"])
+        common_obj.click(45, "xpath", ProHomepage["AddEWPButtonXpath"])
         allWindowsHandles = self.driver.window_handles
         for handle in allWindowsHandles:
           if handle != mainWindowHandle[0]:
             common_obj.switch_to_window(handle)
             break
-        #exercise creation
+#And I enter an program name 
         randomNumber         = randint(0001, 9999)
-        exerciseNameGenerate = "Exercise ", randomNumber                 
+        exerciseNameGenerate = "program ", randomNumber                 
         common_obj.fill_out_field("xpath",
                                   ModalPopupMap["AddExercisePopup"],
                                   exerciseNameGenerate
@@ -75,27 +79,22 @@ class createExercise(BaseTestCase, unittest.TestCase):
                         "xpath", 
                         ModalPopupMap["AddExerciseButton"]
         )
+#Then see my exercise in Exercise list
         common_obj.wait_for_element_visibility(45, 
                                                "xpath", 
                                                "//a[contains(text(),"+str(randomNumber)+")][@class='gc-exercises-link']"
         )
-#And I click on the new exercise
-        common_obj.click(45, 
-                        "xpath", 
-                        "//a[contains(text(),"+str(randomNumber)+")][@class='gc-exercises-link']"
+#And I see it in Sidebar
+        common_obj.find_element("xpath", 
+                                "//span[contains(text(),"+str(randomNumber)+")]"
         )
-#And I am redirected to exercise overview
-        common_obj.wait_for_element_visibility(45, 
-                                               "xpath", 
-                                               "//span[.='Exercises']"
-        )
-        time.sleep(5)
+
     def tearDown(self):
-        super(createExercise, self).tearDown()
+        super(createProgram, self).tearDown()
         
 
 if __name__ == "__main__":
-   unittest.main()
+   nose.main()
 
 
 

@@ -7,12 +7,16 @@ PublicPageMap = dict (UsernameFieldXpath	= "//input[@name='username']",
 )
 
 ProHomepage = dict	(GlobalSearchBarXpath	= "//input[@id='gc-topnav-search']",
-					 AddExerciseButtonXpath = "//a[@class='btn btn-link gc-show-add-exercise-modal']",
+					 AddEWPButtonXpath 		= "//a[@class='btn btn-link gc-show-add-exercise-modal']",
 					 ExerciseFirstRadioBtn	= "(//input[@type='checkbox'])[2]",
-					 EWPDeleteButton		= "//span[@class='fa fa-trash']"
+					 EWPDeleteButton		= "//span[@class='fa fa-trash']",
+					 DescriptionButton		= "//textarea[@placeholder='Add description here...']"
+
 )
 
-ProSidebar	= dict  (ExercisesButtonLink	= "//span[.='EXERCISES']"
+ProSidebar	= dict  (ExercisesButtonLink	= "//span[.='EXERCISES']",
+					 WorkoutButtonLink		= "//span[.='WORKOUTS']",
+					 ProgramButtonLink		= "//span[.='PROGRAMS']"
 )
 
 ModalPopupMap = dict (AddExercisePopup		= "//*[@id='gc-modal-region']//input[@class='form-control']",

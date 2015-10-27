@@ -11,26 +11,26 @@ import time
 import nose
 
 """
-Scenario: Pro creates a new exercise.
+Scenario: Pro creates a new Workout.
 Given I am a Pro
-And I am in Exercise List
-When I press Add Exercise
+And I am in Workout List
+When I press Add Workout
 And a modal pop up appears
-And I enter an exercise name
-Then see my exercise in Exercise list 
+And I enter an Workout name
+Then see my Workout in Workout list 
 And I see it in Sidebar
 
 """
 
 
-class createExercise(BaseTestCase, unittest.TestCase):
+class createWorkout(BaseTestCase, unittest.TestCase):
 
     def setUp(self):
-        super(createExercise, self).setUp()
+        super(createWorkout, self).setUp()
         self.navigate_to_page(TT_Constants['Base_URL'])
         
 
-    def test_createExercise(self):
+    def test_createWorkout(self):
         common_obj = Common(self.driver)
 
         common_obj.wait_for_element_visibility(45, 
@@ -54,12 +54,12 @@ class createExercise(BaseTestCase, unittest.TestCase):
                                                "xpath", 
                                                ProHomepage["GlobalSearchBarXpath"]
         )
-#And I am in Exercise List
+#And I am in Workout List
         common_obj.click(45, 
                         "xpath", 
-                        ProSidebar["ExercisesButtonLink"]
+                        ProSidebar["WorkoutButtonLink"]
         )
-#When I press Add Exercise       
+#When I press Add workout       
 #And A modal pop up appears
         mainWindowHandle  = self.driver.window_handles
         common_obj.click(45, "xpath", ProHomepage["AddEWPButtonXpath"])
@@ -68,9 +68,9 @@ class createExercise(BaseTestCase, unittest.TestCase):
           if handle != mainWindowHandle[0]:
             common_obj.switch_to_window(handle)
             break
-#And I enter an exercise name 
+#And I enter an workout name 
         randomNumber         = randint(0001, 9999)
-        exerciseNameGenerate = "Exercise ", randomNumber                 
+        exerciseNameGenerate = "Workout ", randomNumber                 
         common_obj.fill_out_field("xpath",
                                   ModalPopupMap["AddExercisePopup"],
                                   exerciseNameGenerate
@@ -90,7 +90,7 @@ class createExercise(BaseTestCase, unittest.TestCase):
         )
 
     def tearDown(self):
-        super(createExercise, self).tearDown()
+        super(createWorkout, self).tearDown()
         
 
 if __name__ == "__main__":

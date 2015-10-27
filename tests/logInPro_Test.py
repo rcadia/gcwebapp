@@ -5,6 +5,7 @@ from gcwebapp.UIMap                import PublicPageMap
 from gcwebapp.UIMap                import ProHomepage
 import unittest
 import time
+import nose
 
 """
 Scenario: Pro user logs in using valid credentials.
@@ -54,7 +55,7 @@ class logInPro(BaseTestCase, unittest.TestCase):
         
 
 if __name__ == "__main__":
-   unittest.main()
+   nose.main()
 
 
 

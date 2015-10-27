@@ -10,6 +10,7 @@ from gcwebapp.UIMap                import ModalPopupMap
 from random                        import randint                    
 import unittest
 import time
+import nose
 
 """
 Scenario: Pro deletes an existing exercise.
@@ -93,14 +94,14 @@ class deleteExercise(BaseTestCase, unittest.TestCase):
         dataID3 = DataId.get_attribute("data-id")
         print dataID3
 
-        assert dataID2 =! dataID3
+        assert dataID2 != dataID3
 
     def tearDown(self):
         super(deleteExercise, self).tearDown()
         
 
 if __name__ == "__main__":
-   unittest.main()
+   nose.main()
 
 
 

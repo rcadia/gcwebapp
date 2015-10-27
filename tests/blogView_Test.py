@@ -4,6 +4,7 @@ from gcwebapp.Common               import Common
 from gcwebapp.UIMap                import PublicPageMap
 import unittest
 import time
+import nose
 
 """
 Scenario: Pro user logs in using valid credentials.
@@ -44,7 +45,7 @@ class blogView(BaseTestCase, unittest.TestCase):
         
 
 if __name__ == "__main__":
-   unittest.main()
+   nose.main()
 
 
 
