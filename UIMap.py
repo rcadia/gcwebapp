@@ -10,7 +10,9 @@ ProHomepage = dict	(GlobalSearchBarXpath	= "//input[@id='gc-topnav-search']",
 					 AddEWPButtonXpath 		= "//a[@class='btn btn-link gc-show-add-exercise-modal']",
 					 ExerciseFirstRadioBtn	= "(//input[@type='checkbox'])[2]",
 					 EWPDeleteButton		= "//span[@class='fa fa-trash']",
-					 DescriptionButton		= "//textarea[@placeholder='Add description here...']"
+					 ExerciseDescField		= "//textarea[@placeholder='Add description here...']",
+					 WorkoutDescField		= "//textarea[@class='gc-workout-description-editor gc-description-editor form-control'][@placeholder='Start typing a description here...']",
+					 ProgramDescField		= "//textarea[@class='gc-program-description-editor gc-description-editor form-control'][@placeholder='Start typing a description here...']"
 
 )
 

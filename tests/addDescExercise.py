@@ -1,4 +1,6 @@
 from gcwebapp.Constants            import TT_Constants
+from selenium                      import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
 from gcwebapp.BaseTestCase         import BaseTestCase
 from gcwebapp.Common               import Common
 from gcwebapp.UIMap                import PublicPageMap
@@ -6,31 +8,30 @@ from gcwebapp.UIMap                import ProHomepage
 from gcwebapp.UIMap                import ProSidebar
 from gcwebapp.UIMap                import ModalPopupMap
 from random                        import randint                    
+import nose
 import unittest
 import time
-import nose
 
 """
-Scenario: Pro creates a new Workout.
-Given I am a Pro
-And I am in Workout List
-When I press Add Workout
-And a modal pop up appears
-And I enter an Workout name
-Then see my Workout in Workout list 
-And I see it in Sidebar
-
+Scenario: Pro enters a Description to a newly created exercise.
+Given I am pro
+And I added a new exercise
+And I click on new Exercise
+And I am redirected to exercise overview
+When I enter a description
+And I click outside of the description area
+Then the my input value is visible
 """
 
 
-class createWorkout(BaseTestCase, unittest.TestCase):
+class addDescExercise(BaseTestCase, unittest.TestCase):
 
     def setUp(self):
-        super(createWorkout, self).setUp()
+        super(addDescExercise, self).setUp()
         self.navigate_to_page(TT_Constants['Base_URL'])
         
 
-    def test_createWorkout(self):
+    def test_createExercise(self):
         common_obj = Common(self.driver)
 
         common_obj.wait_for_element_visibility(45, 
@@ -54,13 +55,11 @@ class createWorkout(BaseTestCase, unittest.TestCase):
                                                "xpath", 
                                                ProHomepage["GlobalSearchBarXpath"]
         )
-#And I am in Workout List
+#And I added a new exercise
         common_obj.click(45, 
                         "xpath", 
-                        ProSidebar["WorkoutButtonLink"]
+                        ProSidebar["ExercisesButtonLink"]
         )
-#When I press Add workout       
-#And A modal pop up appears
         mainWindowHandle  = self.driver.window_handles
         common_obj.click(45, "xpath", ProHomepage["AddEWPButtonXpath"])
         allWindowsHandles = self.driver.window_handles
@@ -68,9 +67,9 @@ class createWorkout(BaseTestCase, unittest.TestCase):
           if handle != mainWindowHandle[0]:
             common_obj.switch_to_window(handle)
             break
-#And I enter an workout name 
+        #exercise creation
         randomNumber         = randint(0001, 9999)
-        exerciseNameGenerate = "Workout ", randomNumber                 
+        exerciseNameGenerate = "Exercise ", randomNumber                 
         common_obj.fill_out_field("xpath",
                                   ModalPopupMap["AddExercisePopup"],
                                   exerciseNameGenerate
@@ -79,18 +78,41 @@ class createWorkout(BaseTestCase, unittest.TestCase):
                         "xpath", 
                         ModalPopupMap["AddExerciseButton"]
         )
-#Then see my workout in workout list
         common_obj.wait_for_element_visibility(45, 
                                                "xpath", 
                                                "//a[contains(text(),"+str(randomNumber)+")][@class='gc-exercises-link']"
         )
-#And I see it in Sidebar
-        common_obj.find_element("xpath", 
-                                "//span[contains(text(),"+str(randomNumber)+")]"
+#And I click on the new exercise
+        common_obj.click(45, 
+                        "xpath", 
+                        "//a[contains(text(),"+str(randomNumber)+")][@class='gc-exercises-link']"
+        )
+#And I am redirected to exercise overview
+        common_obj.wait_for_element_visibility(45, 
+                                               "xpath", 
+                                               "//span[.='Exercises']"
+        )
+#When I enter a description
+        common_obj.wait_for_element_visibility(45, 
+                                               "xpath", 
+                                               ProHomepage["ExerciseDescField"]
         )
 
+        common_obj.fill_out_field("xpath",
+                                  ProHomepage["ExerciseDescField"],
+                                  "This is an auto generated text created for WebApp Testing...!"
+        )  
+#And I click outside of the description area
+        common_obj.click(45, 
+                        "xpath", 
+                        "//div [@class='gc-topbar-search']"
+        )
+#Then the my input value is visible
+        VerifyValue = WebDriverWait(self.driver, 10).until(lambda driver: self.driver.find_element_by_xpath(ProHomepage["ExerciseDescField"])).get_attribute("value")
+        assert "This is an auto generated text created for WebApp Testing...!" == VerifyValue
+
     def tearDown(self):
-        super(createWorkout, self).tearDown()
+        super(addDescExercise, self).tearDown()
         
 
 if __name__ == "__main__":
