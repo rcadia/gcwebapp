@@ -1,8 +1,6 @@
 from gcwebapp.Constants            import TT_Constants
 from gcwebapp.BaseTestCase         import BaseTestCase
-from gcwebapp.Common               import Common
-from gcwebapp.UIMap                import PublicPageMap
-from gcwebapp.UIMap                import ProHomepage
+from gcwebapp.pages.LandingPage    import LandingPage
 import unittest
 import time
 import nose
@@ -26,29 +24,9 @@ class logInPro(BaseTestCase, unittest.TestCase):
         
 
     def test_LogInPro(self):
-        common_obj = Common(self.driver)
-
-        common_obj.wait_for_element_visibility(50, 
-                                               "xpath", 
-                                               PublicPageMap["UsernameFieldXpath"]
-        )
-        common_obj.fill_out_field("xpath", 
-                                  PublicPageMap["UsernameFieldXpath"],
-                                  TT_Constants["proUsername"]                          
-        )
-        common_obj.fill_out_field("xpath", 
-                                  PublicPageMap["PasswordFieldXpath"],
-                                  TT_Constants["proPassword"]
-        )
-        common_obj.click(50, 
-                        "xpath", 
-                        PublicPageMap["LoginButtonNameXpath"]
-        )
-        common_obj.wait_for_element_visibility(20, 
-                                               "xpath", 
-                                               ProHomepage["GlobalSearchBarXpath"]
-        )
-
+      	login_pro_object = LandingPage(self.driver)
+      	login_pro_object.loginPro()
+        
     
     def tearDown(self):
         super(logInPro, self).tearDown()
