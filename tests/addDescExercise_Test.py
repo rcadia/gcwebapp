@@ -1,13 +1,9 @@
-from gcwebapp.Constants            import TT_Constants
-from selenium                      import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from gcwebapp.BaseTestCase         import BaseTestCase
-from gcwebapp.Common               import Common
-from gcwebapp.UIMap                import PublicPageMap
-from gcwebapp.UIMap                import ProHomepage
-from gcwebapp.UIMap                import ProSidebar
-from gcwebapp.UIMap                import ModalPopupMap
-from random                        import randint                    
+from gcwebapp.Constants                   import TT_Constants
+from gcwebapp.BaseTestCase                import BaseTestCase
+from gcwebapp.pages.LandingPage           import LandingPage
+from gcwebapp.pages.ProHomePage           import ProHomePage
+from gcwebapp.pages.ExerciseListPage      import ExerciseListPage
+from gcwebapp.pages.ExerciseOverviewPage  import ExerciseOverviewPage            
 import nose
 import unittest
 import time
