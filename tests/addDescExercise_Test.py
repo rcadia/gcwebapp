@@ -27,85 +27,19 @@ class addDescExercise(BaseTestCase, unittest.TestCase):
         self.navigate_to_page(TT_Constants['Base_URL'])
         
 
-    def test_createExercise(self):
-        common_obj = Common(self.driver)
+    def test_addDescription(self):
+        add_description_obj = LandingPage(self.driver)
+        add_description_obj.loginPro()
 
-        common_obj.wait_for_element_visibility(45, 
-                                               "xpath", 
-                                               PublicPageMap["UsernameFieldXpath"]
-        )
-#Given I am a Pro
-        common_obj.fill_out_field("xpath", 
-                                  PublicPageMap["UsernameFieldXpath"],
-                                  TT_Constants["proUsername"]                          
-        )
-        common_obj.fill_out_field("xpath", 
-                                  PublicPageMap["PasswordFieldXpath"],
-                                  TT_Constants["proPassword"]
-        )
-        common_obj.click(45, 
-                        "xpath", 
-                        PublicPageMap["LoginButtonNameXpath"]
-        )
-        common_obj.wait_for_element_visibility(45, 
-                                               "xpath", 
-                                               ProHomepage["GlobalSearchBarXpath"]
-        )
-#And I added a new exercise
-        common_obj.click(45, 
-                        "xpath", 
-                        ProSidebar["ExercisesButtonLink"]
-        )
-        mainWindowHandle  = self.driver.window_handles
-        common_obj.click(45, "xpath", ProHomepage["AddEWPButtonXpath"])
-        allWindowsHandles = self.driver.window_handles
-        for handle in allWindowsHandles:
-          if handle != mainWindowHandle[0]:
-            common_obj.switch_to_window(handle)
-            break
-        #exercise creation
-        randomNumber         = randint(0001, 9999)
-        exerciseNameGenerate = "Exercise ", randomNumber                 
-        common_obj.fill_out_field("xpath",
-                                  ModalPopupMap["AddExercisePopup"],
-                                  exerciseNameGenerate
-        )                    
-        common_obj.click(45, 
-                        "xpath", 
-                        ModalPopupMap["AddExerciseButton"]
-        )
-        common_obj.wait_for_element_visibility(45, 
-                                               "xpath", 
-                                               "//a[contains(text(),"+str(randomNumber)+")][@class='gc-exercises-link']"
-        )
-#And I click on the new exercise
-        common_obj.click(45, 
-                        "xpath", 
-                        "//a[contains(text(),"+str(randomNumber)+")][@class='gc-exercises-link']"
-        )
-#And I am redirected to exercise overview
-        common_obj.wait_for_element_visibility(45, 
-                                               "xpath", 
-                                               "//span[.='Exercises']"
-        )
-#When I enter a description
-        common_obj.wait_for_element_visibility(45, 
-                                               "xpath", 
-                                               ProHomepage["ExerciseDescField"]
-        )
+        add_description_obj = ProHomePage(self.driver)
+        add_description_obj.switchToExercises()
 
-        common_obj.fill_out_field("xpath",
-                                  ProHomepage["ExerciseDescField"],
-                                  "This is an auto generated text created for WebApp Testing...!"
-        )  
-#And I click outside of the description area
-        common_obj.click(45, 
-                        "xpath", 
-                        "//div [@class='gc-topbar-search']"
-        )
-#Then the my input value is visible
-        VerifyValue = WebDriverWait(self.driver, 10).until(lambda driver: self.driver.find_element_by_xpath(ProHomepage["ExerciseDescField"])).get_attribute("value")
-        assert "This is an auto generated text created for WebApp Testing...!" == VerifyValue
+        add_description_obj = ExerciseListPage(self.driver)
+        add_description_obj.switch_exerciseList()
+
+        add_description_obj = ExerciseOverviewPage(self.driver)
+        add_description_obj.addDescription()
+
 
     def tearDown(self):
         super(addDescExercise, self).tearDown()
