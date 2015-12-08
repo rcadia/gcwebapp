@@ -8,6 +8,7 @@ from gcwebapp.Constants                       import LocatorMode
 from random                                   import randint
 from BasePage                                 import BasePage
 import time
+import string
 
 class ExerciseOverviewPage(BasePage):
 
@@ -30,19 +31,15 @@ class ExerciseOverviewPage(BasePage):
     	assert "This is an automated note input by Ross for testing purposes "+ str(random)+"." == ExerciseDescription
 
     def updateExerciseName(self):
-        random = randint(10000,99999)
+        random = randint(0,9999)
         ExerciseName = self.wait_for_element_visibility(10, "xpath", "//span[@contenteditable='true']").text
-        ExerciseRenamed = ExerciseName+"_"+str(random)
+        ExerciseRenamed = ExerciseName[0:8]+"_"+str(random)
         self.click(10, "xpath", "//span[@contenteditable='true']")
         self.fill_out_field("xpath", "//span[@contenteditable='true']", ExerciseRenamed)
         self.click(45, "xpath", "//div [@class='gc-topbar-search']")
         self.wait_for_element_visibility(10, "xpath", "//div[@class='gc-notify-inner gc-notify-inner-success messenger-will-hide-after']")
         self.click(10, "xpath", "//region[@data-name='exercises']//*[@class='gc-menu-item-arrow toggle-it']")
-        self.wait_for_element_visibility(10, "xpath", "//*[@class='col-xs-10 gc-sidebar-folder-name'][contains(text(), '"+str(random)+"')]")
-        self.click(10, "xpath", "col-xs-8 gc-sidebar-cat-name")
-        self.wait_for_element_visibility(10, "xpath", "//*[@class='gc-exercises-link'][contains(text(), '"+str(random)+"')]")
-        print random
-        print ExerciseName
-        print ExerciseRenamed
-        time.sleep(5)
+        self.wait_for_element_visibility(10, "xpath", "//*[@class='col-xs-10 gc-sidebar-folder-name'][contains(text(), '"+ExerciseRenamed+"')]")
+        self.click(10, "xpath", "//*[@class='col-xs-8 gc-sidebar-cat-name'][.='EXERCISES']")
+        self.wait_for_element_visibility(10, "xpath", "//*[@class='gc-exercises-link'][contains(text(), '"+ExerciseRenamed+"')]")
 

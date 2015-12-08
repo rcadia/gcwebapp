@@ -1,16 +1,11 @@
-from selenium                      import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from gcwebapp.Constants            import TT_Constants
-from gcwebapp.BaseTestCase         import BaseTestCase
-from gcwebapp.Common               import Common
-from gcwebapp.UIMap                import PublicPageMap
-from gcwebapp.UIMap                import ProHomepage
-from gcwebapp.UIMap                import ProSidebar
-from gcwebapp.UIMap                import ModalPopupMap
-from random                        import randint                    
+from gcwebapp.Constants                 import TT_Constants
+from gcwebapp.BaseTestCase              import BaseTestCase
+from random                             import randint
 import unittest
-import time
 import nose
+from gcwebapp.pages.LandingPage         import LandingPage
+from gcwebapp.pages.ProHomePage         import ProHomePage
+from gcwebapp.pages.WorkoutListPage     import WorkoutListPage
 
 """
 Scenario: Pro deletes an existing workout.
@@ -34,66 +29,15 @@ class deleteWorkout(BaseTestCase, unittest.TestCase):
         
 
     def test_deleteWorkout(self):
-        common_obj = Common(self.driver)
+        
+        delete_workout_obj = LandingPage(self.driver)
+        delete_workout_obj.loginPro()
 
-        common_obj.wait_for_element_visibility(45, 
-                                               "xpath", 
-                                               PublicPageMap["UsernameFieldXpath"]
-        )
-#Given I am a Pro
-        common_obj.fill_out_field("xpath", 
-                                  PublicPageMap["UsernameFieldXpath"],
-                                  TT_Constants["proUsername"]                          
-        )
-        common_obj.fill_out_field("xpath", 
-                                  PublicPageMap["PasswordFieldXpath"],
-                                  TT_Constants["proPassword"]
-        )
-        common_obj.click(45, 
-                        "xpath", 
-                        PublicPageMap["LoginButtonNameXpath"]
-        )
-        common_obj.wait_for_element_visibility(45, 
-                                               "xpath", 
-                                               ProHomepage["GlobalSearchBarXpath"]
-        )
-#And I am in workout List
-        common_obj.click(45, 
-                        "xpath", 
-                        ProSidebar["WorkoutButtonLink"]
-        )
-#And I click on a random workout item
-        common_obj.click(45, 
-                        "xpath", 
-                        ProHomepage["ExerciseFirstRadioBtn"]
-        )
-        #get unique data-id of checkbox
-        DataId = WebDriverWait(self.driver, 10).until(lambda driver: self.driver.find_element_by_xpath(ProHomepage["ExerciseFirstRadioBtn"]))
-        dataID2 = DataId.get_attribute("data-id")
-#When I press the trash-button
-        mainWindowHandle  = self.driver.window_handles
-        common_obj.click(45, 
-                        "xpath", 
-                        ProHomepage["EWPDeleteButton"]
-        )
-#And I switch my focus to modal popup
-        allWindowsHandles = self.driver.window_handles
-        for handle in allWindowsHandles:
-          if handle != mainWindowHandle[0]:
-            common_obj.switch_to_window(handle)
-            break
-#And I click 'Delete' 
-        common_obj.click(45, 
-                        "xpath", 
-                        ModalPopupMap["Deletebutton"]
-        )
-        time.sleep(2)      
-        #assert that the dataid is deleted.
-        DataId = WebDriverWait(self.driver, 10).until(lambda driver: self.driver.find_element_by_xpath(ProHomepage["ExerciseFirstRadioBtn"]))
-        dataID3 = DataId.get_attribute("data-id")
-        print dataID3
+        delete_workout_obj = ProHomePage(self.driver)
+        delete_workout_obj.switchToWorkouts()
 
-        assert dataID2 != dataID3
+        delete_workout_obj = WorkoutListPage(self.driver)
+        delete_workout_obj.deleteWorkout()
 
     def tearDown(self):
         super(deleteWorkout, self).tearDown()

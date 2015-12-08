@@ -1,14 +1,12 @@
 from gcwebapp.Constants            import TT_Constants
 from gcwebapp.BaseTestCase         import BaseTestCase
-from gcwebapp.Common               import Common
-from gcwebapp.UIMap                import PublicPageMap
-from gcwebapp.UIMap                import ProHomepage
-from gcwebapp.UIMap                import ProSidebar
-from gcwebapp.UIMap                import ModalPopupMap
 from random                        import randint                    
 import unittest
 import time
 import nose
+from gcwebapp.pages.LandingPage     import LandingPage
+from gcwebapp.pages.ProHomePage     import ProHomePage
+from gcwebapp.pages.WorkoutListPage import WorkoutListPage
 
 """
 Scenario: Pro creates a new Workout.
@@ -31,63 +29,15 @@ class createWorkout(BaseTestCase, unittest.TestCase):
         
 
     def test_createWorkout(self):
-        common_obj = Common(self.driver)
 
-        common_obj.wait_for_element_visibility(45, 
-                                               "xpath", 
-                                               PublicPageMap["UsernameFieldXpath"]
-        )
-#Given I am a Pro
-        common_obj.fill_out_field("xpath", 
-                                  PublicPageMap["UsernameFieldXpath"],
-                                  TT_Constants["proUsername"]                          
-        )
-        common_obj.fill_out_field("xpath", 
-                                  PublicPageMap["PasswordFieldXpath"],
-                                  TT_Constants["proPassword"]
-        )
-        common_obj.click(45, 
-                        "xpath", 
-                        PublicPageMap["LoginButtonNameXpath"]
-        )
-        common_obj.wait_for_element_visibility(45, 
-                                               "xpath", 
-                                               ProHomepage["GlobalSearchBarXpath"]
-        )
-#And I am in Workout List
-        common_obj.click(45, 
-                        "xpath", 
-                        ProSidebar["WorkoutButtonLink"]
-        )
-#When I press Add workout       
-#And A modal pop up appears
-        mainWindowHandle  = self.driver.window_handles
-        common_obj.click(45, "xpath", ProHomepage["AddEWPButtonXpath"])
-        allWindowsHandles = self.driver.window_handles
-        for handle in allWindowsHandles:
-          if handle != mainWindowHandle[0]:
-            common_obj.switch_to_window(handle)
-            break
-#And I enter an workout name 
-        randomNumber         = randint(0001, 9999)
-        exerciseNameGenerate = "Workout ", randomNumber                 
-        common_obj.fill_out_field("xpath",
-                                  ModalPopupMap["AddExercisePopup"],
-                                  exerciseNameGenerate
-        )                    
-        common_obj.click(45, 
-                        "xpath", 
-                        ModalPopupMap["AddExerciseButton"]
-        )
-#Then see my workout in workout list
-        common_obj.wait_for_element_visibility(45, 
-                                               "xpath", 
-                                               "//a[contains(text(),"+str(randomNumber)+")][@class='gc-exercises-link']"
-        )
-#And I see it in Sidebar
-        common_obj.find_element("xpath", 
-                                "//span[contains(text(),"+str(randomNumber)+")]"
-        )
+        create_workout_obj = LandingPage(self.driver)
+        create_workout_obj.loginPro()
+
+        create_workout_obj = ProHomePage(self.driver)
+        create_workout_obj.switchToWorkouts()
+
+        create_workout_obj = WorkoutListPage(self.driver)
+        create_workout_obj.addWorkout()
 
     def tearDown(self):
         super(createWorkout, self).tearDown()
