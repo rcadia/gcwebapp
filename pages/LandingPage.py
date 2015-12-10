@@ -14,14 +14,14 @@ class LandingPage(BasePage):
 
     def _verify_page(self):
         try:
-            self.wait_for_element_visibility(10, "xpath", "//button[.='Log in']")
+            self.wait_for_element_visibility(45, "xpath", "//button[.='Log in']")
         except:
             raise IncorrectPageException
 
     def loginPro(self):
         self.fill_out_field("xpath", "//input[@name='username']", "proautomate@yopmail.com")
         self.fill_out_field("xpath", "//input[@name='password']", "gymcloud")
-        self.click(10, "xpath", "//button[.='Log in']")
-        self.wait_for_element_visibility(10, "xpath", "//input[@id='gc-topnav-search']")
+        self.click(45, "xpath", "//button[.='Log in']")
+        self.wait_for_element_visibility(45, "xpath", "//input[@id='gc-topnav-search']")
 
       

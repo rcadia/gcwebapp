@@ -25,6 +25,10 @@ class ProHomePage(BasePage):
     def switchToWorkouts(self):
         self.click(10, "xpath", "//span[.='WORKOUTS']")
         self.wait_for_element_visibility(10, "xpath", "//*[@class='gc-breadcrumbs-title']//*[.='Workouts']")
+
+    def switchToPrograms(self):
+        self.click(10, "xpath", "//span[.='PROGRAMS']")
+        self.wait_for_element_visibility(10, "xpath", "//*[@class='gc-breadcrumbs-title']//*[.='Programs']")
         
 
       
