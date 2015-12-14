@@ -1,4 +1,4 @@
-TT_Constants = dict(Browser           = "firefox",
+TT_Constants = dict(Browser           = "chrome",
 	                Base_URL          = "http://app2.s.gymcloud.com/",
                     proUsername 	  = "proautomate@yopmail.com",
                     proPassword 	  = "gymcloud"

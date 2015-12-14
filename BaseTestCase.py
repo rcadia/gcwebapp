@@ -1,5 +1,5 @@
 from selenium                import webdriver
-from gcwebapp.Constants import TT_Constants
+from gcwebapp.Constants      import TT_Constants
 import unittest
 
 class BaseTestCase(object):
@@ -14,6 +14,9 @@ class BaseTestCase(object):
       elif TT_Constants['Browser'].lower() == "ie": 
         self.driver = webdriver.Ie()
         self.driver.maximize_window()
+      elif TT_Constants['Browser'].lower() == "phantomjs": 
+        self.driver = webdriver.PhantomJS()
+        #self.driver.maximize_window()
       else:
         raise Exception("This browser is not supported at the moment.")
 
